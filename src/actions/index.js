@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { AUTH_USER } from './types';
+
 
 const ROOT_URL = 'http://localhost:3090';
 
@@ -10,7 +12,11 @@ export function signinUser({ email, password }, callback) {
             .then(response => {
                 // If request is good:
                 // - update state to indicate user is authenticate
+                dispatch({ type: AUTH_USER });
+
                 // - save the JWT token
+                localStorage.setItem('token', response.data.token);
+
                 // - redirect to the route /feature
                 callback();
             })
