@@ -8,7 +8,9 @@ class Signin extends Component {
     handleFormSubmit({ email, password }) {
         console.log("email:", email);
         console.log("password:", password);
-        this.props.signinUser({ email, password });
+        this.props.signinUser({ email, password }, () => {
+            this.props.history.push('/feature');
+        });
     }
 
     renderField(field) {
