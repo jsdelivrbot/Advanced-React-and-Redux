@@ -13,11 +13,23 @@ class Signin extends Component {
         });
     }
 
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return (
+                <div className="alert alert-danger">
+                    <strong>Oops!</strong> {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
+
     renderField(field) {
+        const { type } = field;
+
         return (
             <div>
                 <label>{field.label}</label>
-                <input className="form-control" {...field.input} />
+                <input className="form-control" {...field.input} type={type}/>
             </div>
         );
     }
@@ -36,17 +48,23 @@ class Signin extends Component {
                     <Field
                         label="Password:"
                         name="password"
+                        type="password"
                         component={this.renderField}
                     />
                 </fieldset>
+                {this.renderAlert()}
                 <button action="submit" className="btn btn-primary">Sign in</button>
             </form>
         );
     }
 }
 
+function mapStateToProps(state) {
+    return { errorMessage: state.auth.error };
+}
+
 export default reduxForm({
     form: 'signin'
 })(
-    connect(null, { signinUser })(Signin)
+    connect(mapStateToProps, { signinUser })(Signin)
 );
